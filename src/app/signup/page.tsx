@@ -1,22 +1,48 @@
 "use client";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import { toast } from "react-hot-toast";
 
 export default function SigupPage() {
-    const [user, setUser] = useState({
+    const router = useRouter();
+
+    const [user, setUser] = React.useState({
         email: "",
         password: "",
         username: "",
     });
 
-    const onSignup = async () => {
+    const [buttonDisabled, setButtonDisabled] = React.useState(false);
+    const [loading, setLoading] = React.useState(false);
 
+    const onSignup = async () => {
+        try {
+            setLoading(true);
+            const response = await axios.post("/api/users/signup", user);
+            console.log("succss", response.data);
+            router.push("/login");
+        } catch (error: any) {
+            toast.error(error.message);
+            console.log(error.message);
+        } finally {
+            setLoading(false);
+        }
     }
+
+    useEffect(() => {
+      if(user.email.length > 0 && user.password.length > 0 && user.username.length > 0) {
+        setButtonDisabled(false);
+      } else {
+        setButtonDisabled(true);
+      }
+    }, [user])
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen py-2">
             <div className="mockup-code w-fit shadow-2xl">
-            <pre data-prefix="$"><code>Sign Up</code></pre> 
+            <pre data-prefix="$"><code>{loading ? "Processing..." : "Signup"}</code></pre> 
                 <pre data-prefix=">" className="text-warning"><code>
                     <input 
                         id="username"
@@ -53,8 +79,8 @@ export default function SigupPage() {
                 <pre data-prefix="#" className="text-accent"><code>
                     <button
                         onClick={onSignup}
-                        className="mt-2"
-                    >Signup Now</button>
+                        className={`mt-2 ${buttonDisabled ? "btn-disabled" : ""}`}
+                    >Signup</button>
                 </code></pre>
 
                 <pre data-prefix="~" className="bg-warning text-warning-content mt-5"><code>Already have an account? <Link href="/login" className="cursor-pointer">Login</Link></code></pre>

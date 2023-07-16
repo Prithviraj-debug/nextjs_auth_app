@@ -14,7 +14,7 @@ export default function LoginPage() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen py-2 w-full">
-            <div className="mockup-code w-fit shadow-2xl">
+            <div className="mockup-code w-fit shadow-2xl m-3">
                 <pre data-prefix="$"><code>Login</code></pre> 
                 <pre data-prefix=">" className="text-warning"><code>
                     <input 
@@ -43,9 +43,8 @@ export default function LoginPage() {
                     >Login</button>
                 </code></pre>
 
-                <pre data-prefix="~" className="bg-warning text-warning-content mt-5"><code>Don't have an account? <Link href="/signup" className="cursor-pointer">Sign Up</Link></code></pre>
+                <pre data-prefix="~" className="bg-warning text-warning-content mt-5 text-sm"><code>Don't have an account? <Link href="/signup" className="cursor-pointer">Sign Up</Link></code></pre>
             </div>
-
         </div>
     )
 }

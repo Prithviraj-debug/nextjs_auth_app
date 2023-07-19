@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Alert from "../../components/alert";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -11,8 +12,16 @@ export default function LoginPage() {
         email: "",
         password: "",
     });
+    const resetFields = () => {
+        setUser({
+            email: "",
+            password: "",
+        })
+    }
+
     const [buttonDisabled, setButtonDisabled] = useState(true);
     const [loading, setLoading] = useState(false);
+    const [isAlertOpen, setIsAlertOpen] = useState(false);
 
     const onLogin = async () => {
         try {
@@ -20,9 +29,14 @@ export default function LoginPage() {
             const response = await axios.post("/api/users/login", user);
             console.log("success", response.data);
             toast.success("Login successful");
-            router.push("/profile");
+            resetFields();
+            setTimeout(() => {
+                router.push("/profile");
+            }, 3000);
         } catch (error: any) {
             console.log(error.message);
+            setIsAlertOpen(true);
+            resetFields();
         } finally {
             setLoading(false);
         }
@@ -35,6 +49,14 @@ export default function LoginPage() {
             setButtonDisabled(true);
         }
     }, [user]);
+
+    useEffect(() => {
+        if (isAlertOpen) {
+            setTimeout(() => {
+                setIsAlertOpen(false);
+            }, 4000);
+        }
+    }, [isAlertOpen])
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen py-2 w-full">
@@ -69,6 +91,11 @@ export default function LoginPage() {
 
                 <pre data-prefix="~" className="bg-warning text-warning-content mt-5 text-sm"><code>Don't have an account? <Link href="/signup" className="cursor-pointer">Sign Up</Link></code></pre>
             </div>
+            {
+                isAlertOpen && (
+                    <Alert />
+                )
+            }
         </div>
     )
 }

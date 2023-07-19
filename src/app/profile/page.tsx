@@ -9,10 +9,12 @@ export default function ProfilePage() {
     
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState({
+        _id: "",
         username: "",
         email: "",
         isVerified: false,
     });
+    const { _id, email } = data;
     const logout = async () => {
         try {
             const response = await axios.get("/api/users/logout");
@@ -38,6 +40,21 @@ export default function ProfilePage() {
         }
     }
 
+    const resetPassword = async () => {
+        try {
+            setIsLoading(true);
+            const res = await axios.post("/api/users/profile", data);
+        } catch (error: any) {
+            console.log(error.message);
+            toast.error("Reset password failed");
+        }
+        finally {
+            setIsLoading(false);
+            alert("Reset password link has been sent to your email")
+        }
+    }
+
+
     useEffect(() => {
         getUserDetail();
     }, [])
@@ -57,10 +74,21 @@ export default function ProfilePage() {
                         Logout
                     </button>
                 </code></pre>
+                {/* reset password */}
+
+                <pre><code>
+                    <button
+                    onClick={resetPassword}
+                    className="btn btn-accent mt-3"
+                    >
+                        Reset Password
+                    </button>
+                </code></pre>
+
             </div>
-                        {isLoading && (
-                            <span className="loading loading-infinity loading-lg absolute"></span>
-                        )}
+                {isLoading && (
+                    <span className="loading loading-infinity loading-lg absolute"></span>
+                )}
         </div>
     )
 }

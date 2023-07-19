@@ -5,9 +5,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
       <div className="mockup-code">
-        <pre><code><Link href="/login" className='text-lime-500'>Login</Link></code></pre>
-
-        <pre><code><Link href="/signup" className='text-lime-500'>SignUp</Link></code></pre>
+        <pre><code><Link href="/profile" className='text-lime-500'>Your Profile</Link></code></pre>
       </div>
     </div>
 

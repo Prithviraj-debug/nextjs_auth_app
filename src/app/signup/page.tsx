@@ -83,7 +83,7 @@ export default function SigupPage() {
                     >Signup</button>
                 </code></pre>
 
-                <pre data-prefix="~" className="bg-warning text-warning-content mt-5"><code>Already have an account? <Link href="/login" className="cursor-pointer">Login</Link></code></pre>
+                <pre data-prefix="~" className="bg-warning text-warning-content mt-5 text-sm"><code>Already have an account? <Link href="/login" className="cursor-pointer">Login</Link></code></pre>
                 </div>
         </div>
     )

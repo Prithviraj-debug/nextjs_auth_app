@@ -1,13 +1,18 @@
 "use client";
 import axios from "axios";
-import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function ProfilePage() {
     const router = useRouter();
-    const [data, setData] = useState("nothing");
+    
+    const [isLoading, setIsLoading] = useState(false);
+    const [data, setData] = useState({
+        username: "",
+        email: "",
+        isVerified: false,
+    });
     const logout = async () => {
         try {
             const response = await axios.get("/api/users/logout");
@@ -20,35 +25,42 @@ export default function ProfilePage() {
         }
     }
 
-    const getUserDetail = async () => {
-        const res = await axios.get("/api/users/user")
-        console.log(res.data);
-        setData(res.data.data._id);
+    const getUserDetail: any = async () => {
+        try {
+            setIsLoading(true);
+            const res = await axios.get("/api/users/user")
+            setData(res.data.data);
+        } catch (error: any) {
+            console.log(error.message);
+        }
+        finally {
+            setIsLoading(false);
+        }
     }
+
+    useEffect(() => {
+        getUserDetail();
+    }, [])
+
     return (
         <div className="flex flex-col items-center justify-center min-h-screen py-2">
-            <div className="mockup-code">
+            <div className={`mockup-code ${isLoading ? 'hidden' : 'block'}`}>
                 <pre><code>Profile</code></pre>
-                <pre><code>{data === 'nothing' ? "Nothing" : <Link href={`/profile/${data}`}>{data}</Link>}
-                </code></pre>
+                <pre><code>{data && `Username: ${data.username}`}</code></pre>
+                <pre><code>{data && `Email: ${data.email}`}</code></pre>
+                <pre><code>{data && `${data.isVerified ? "Email is Verified :)" : "Email is not verified :("}`}</code></pre>
                 <pre><code>
                     <button
                     onClick={logout}
-                        className="btn btn-accent mt-3"
+                    className="btn btn-accent mt-3"
                     >
                         Logout
                     </button>
                 </code></pre>
-
-                <pre><code>
-                    <button
-                    onClick={getUserDetail}
-                        className="btn btn-primary mt-3"
-                    >
-                        Get User Details
-                    </button>
-                </code></pre>
             </div>
+                        {isLoading && (
+                            <span className="loading loading-infinity loading-lg absolute"></span>
+                        )}
         </div>
     )
 }

@@ -27,12 +27,10 @@ export default function LoginPage() {
         try {
             setLoading(true);
             const response = await axios.post("/api/users/login", user);
-            console.log("success", response.data);
-            toast.success("Login successful");
             resetFields();
-            setTimeout(() => {
-                router.push("/profile");
-            }, 3000);
+            router.push("/profile");
+            // setTimeout(() => {
+            // }, 3000);
         } catch (error: any) {
             console.log(error.message);
             setIsAlertOpen(true);
@@ -60,7 +58,7 @@ export default function LoginPage() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen py-2 w-full">
-            <div className="mockup-code w-fit shadow-2xl m-3">
+            <div className={`mockup-code w-fit shadow-2xl m-3 ${loading ? 'hidden' : 'block'}`}>
                 <pre data-prefix="$"><code>{loading ? "Processing..." : "Login"}</code></pre> 
                 <pre data-prefix=">" className="text-warning"><code>
                     <input 
@@ -94,6 +92,12 @@ export default function LoginPage() {
             {
                 isAlertOpen && (
                     <Alert />
+                )
+            }
+
+            {
+                 loading && (
+                    <span className="loading loading-infinity loading-lg absolute"></span>
                 )
             }
         </div>

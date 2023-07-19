@@ -14,7 +14,6 @@ export default function ProfilePage() {
         email: "",
         isVerified: false,
     });
-    const { _id, email } = data;
     const logout = async () => {
         try {
             const response = await axios.get("/api/users/logout");

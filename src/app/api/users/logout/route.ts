@@ -11,7 +11,7 @@ export async function GET() {
         )
 
         // Clear the token cookie
-        // cookies().set("token", "", { httpOnly: true, expires: new Date(0) });
+        cookies().set("token", "", { httpOnly: true, expires: new Date(0) });
         // response.cookies.set("token", "", { httpOnly: true, expires: new Date(0) });
         return response;
     } catch (error: any) {

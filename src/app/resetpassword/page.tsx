@@ -16,6 +16,7 @@ export default function ResetPasswordPage() {
     const logout = async () => {
         try {
             const response = await axios.get("/api/users/logout");
+            console.log("success", response.data);
             router.push("/login");
         } catch (error: any) {
             console.log(error.message);
